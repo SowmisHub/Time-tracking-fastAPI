@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-import models
-import schemas
-import auth
+from app import models
+from app import schemas
+from app import auth
 
-from database import Base, engine, SessionLocal
+from app.database import Base, engine, SessionLocal
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="TimeFlow API")
