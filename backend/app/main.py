@@ -12,7 +12,7 @@ app = FastAPI(title="TimeFlow API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://aesthetic-medovik-270a30.netlify.app"],
+    allow_origins=["https://time-tracking-webapp.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
