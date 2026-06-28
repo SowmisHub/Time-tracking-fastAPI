@@ -44,23 +44,38 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
 
     function init() {
-        // Check authentication
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = 'index.html';
-                return;
-            }
 
-            // Set user name
-            userName.textContent = user.displayName || user.email?.split('@')[0] || 'User';
-            
-            // Set date picker to today
-            datePicker.value = currentDate;
-            datePicker.max = Utils.getTodayDate();
-            
-            // Load activities
-            loadActivities();
-        });
+        const token = localStorage.getItem("token");
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (!token || !user) {
+
+            window.location.href = "index.html";
+
+            return;
+
+        }
+
+        userName.textContent = user.name;
+
+        const navUserName = document.getElementById("navUserName");
+        const navUserInitial = document.getElementById("navUserInitial");
+
+        if (navUserName) {
+            navUserName.textContent = user.name;
+        }
+
+        if (navUserInitial) {
+            navUserInitial.textContent = user.name.charAt(0).toUpperCase();
+        }
+
+        datePicker.value = currentDate;
+
+        datePicker.max = Utils.getTodayDate();
+
+        loadActivities();
+
     }
 
     // Load activities for selected date
@@ -285,18 +300,20 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `analytics.html?date=${currentDate}`;
     });
 
-    // Logout
-    logoutBtn.addEventListener('click', async () => {
-        try {
-            if (unsubscribe) {
-                unsubscribe();
-            }
-            await auth.signOut();
-            window.location.href = 'index.html';
-        } catch (error) {
-            console.error('Error signing out:', error);
-            Utils.showToast('Failed to sign out', 'error');
+    logoutBtn.addEventListener("click", () => {
+
+        if (unsubscribe) {
+
+            unsubscribe();
+
         }
+
+        localStorage.removeItem("token");
+
+        localStorage.removeItem("user");
+
+        window.location.href = "index.html";
+
     });
 
     // Close modal on Escape key
